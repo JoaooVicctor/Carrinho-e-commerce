@@ -4,7 +4,7 @@ import { CartContext } from "../../contexts/CartContext"
 
 
 export function Cart() {
-  const { cart } = useContext(CartContext);
+  const { cart, total, removeItemCart, incrementItemCart } = useContext(CartContext);
 
   return(
     <div className="w-full max-w-7xl mx-auto">
@@ -20,21 +20,27 @@ export function Cart() {
       )}
 
       {cart.map( (item) => (
-        <section key={item.id} className="flex items-center justify-between border-b-2 border-grey-300">
+        <section key={item.id} className="flex items-center justify-between border-b-2 border-gray-300">
           <img className="w-28" src={item.cover} alt={item.title} />
 
           <strong>Preço: {item.price}</strong>
 
         <div className="flex items-center justify-center gap-3">
-          <button className="bg-slate-600 px-2 rounded text-white font-medium flex items-center justify-center">
+          <button
+          onClick={ () => removeItemCart(item)}
+          className="bg-slate-600 px-2 rounded text-white font-medium flex items-center justify-center">
             -
           </button>
           {item.amount}
-          <button className="bg-slate-600 px-2 rounded text-white font-medium flex items-center justify-center">
+          <button
+          onClick={() => incrementItemCart(item)}
+          className="bg-slate-600 px-2 rounded text-white font-medium flex items-center justify-center">
             +
           </button>
 
         </div>
+
+
 
         <strong className="float-right">
           Subtotal: {item.total.toLocaleString("pt-BR",{
@@ -45,7 +51,7 @@ export function Cart() {
       </section>
       ))}
 
-      {cart.length !== 0 && <p className="font-bold mt-4">Total: R$1.000</p>}
+      {cart.length !== 0 && <p className="font-bold mt-4">Total:{total}</p>}
     </div>
   )
 }
